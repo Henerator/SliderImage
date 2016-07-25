@@ -5,6 +5,7 @@ $(document).ready(function() {
 		var currentSlide = 0;
 		var previousSlide = -1;
 		var timer = null;
+		var slideChangeDelay = 3000;
 
 		function nextSlide() {
 			if (previousSlide >= 0) {
@@ -22,7 +23,7 @@ $(document).ready(function() {
 
 			$(slides[currentSlide]).css("top", "0px");
 			$(slides[currentSlide]).css("opacity", "1.0");
-			timer = setTimeout(nextSlide, 3000);
+			timer = setTimeout(nextSlide, slideChangeDelay);
 		}
 
 		function init() {
@@ -30,11 +31,11 @@ $(document).ready(function() {
 				if (timer != null) clearTimeout(timer);
 			});
 			$slider.mouseleave(function() {
-				timer = setTimeout(nextSlide, 3000);
+				timer = setTimeout(nextSlide, slideChangeDelay);
 			});
 
 			//	find all slides
-			slides = $("li.slider_image");
+			slides = $slider.find($("li.slider_image"));
 			//	hide
 			slides.each(function() {
 				$(this).css("top", "-324px");
@@ -44,16 +45,21 @@ $(document).ready(function() {
 			$(slides[0]).css("top", "0px");
 			$(slides[0]).css("opacity", "1.0");
 
-			timer = setTimeout(nextSlide, 3000);
+			timer = setTimeout(nextSlide, slideChangeDelay);
 		}
 
 		init();
+
+		return {
+			changeDelay : function(value) {
+				slideChangeDelay = value;
+			}
+		};
 	}
 
 	var sliders = [];
+	//	search all sliders and launch them
 	$(".slider").each(function() {
 		sliders.push(new Slider(this));
-
 	});
-	console.log(sliders);
 });
